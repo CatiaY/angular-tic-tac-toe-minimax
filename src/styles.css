@@ -1,1 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
+body {
+    text-align: center;
+}
+
+button {
+    margin-top: 10px;
+    width: 100px;
+    height: 30px;
+    background: #eee;
+    cursor: pointer;
+}
