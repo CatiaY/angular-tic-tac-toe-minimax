@@ -14,6 +14,7 @@ export class JogoComponent implements OnInit {
   fimDeJogo: boolean;
   quadrados: Array<Quadrado> = [];
   numJogadas = 0;
+  numJogadasAdversario = 0;  
 
   constructor(private elementRef: ElementRef, private renderer: Renderer2) { }
 
@@ -77,27 +78,25 @@ export class JogoComponent implements OnInit {
       return;
     }
 
+    // Checa linhas:
     if(this.verificarFimJogo(0, 1, 2))
       return;
-
     if(this.verificarFimJogo(3, 4, 5))
       return;
-
     if(this.verificarFimJogo(6, 7, 8))
       return;
 
+      // Checa colunas:
     if(this.verificarFimJogo(0, 3, 6))
       return;
-
     if(this.verificarFimJogo(1, 4, 7))
       return;
-
     if(this.verificarFimJogo(2, 5, 8))
       return;
 
+    // Checa diagonais:
     if(this.verificarFimJogo(0, 4, 8))
       return;
-
     if(this.verificarFimJogo(2, 4, 6))
       return;    
   }
@@ -105,6 +104,8 @@ export class JogoComponent implements OnInit {
  
   //--------------------------------------------------------------------
   verificarFimJogo(a: number, b: number, c: number): boolean {
+    let eIgual = false;
+
     if(this.quadrados[a].valor !== '-' 
       && this.quadrados[a].valor === this.quadrados[b].valor 
       && this.quadrados[a].valor === this.quadrados[c].valor){
@@ -112,10 +113,10 @@ export class JogoComponent implements OnInit {
         this.mudaCorQuadrado(this.quadrados[a], this.quadrados[b], this.quadrados[c]);
         this.finalizarPartida(this.quadrados[a].valor);       
         
-        return true;
+        eIgual = true;
     }
     
-    return false;
+    return eIgual;
   }
 
 

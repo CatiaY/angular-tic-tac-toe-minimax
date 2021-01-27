@@ -3,7 +3,11 @@
 
     <div class="telaJogo">
         <div class="col-4 g-0" *ngFor="let quadrado of quadrados">
-            <app-quadrado (clicou)="escolherQuadrado(quadrado)" [valor]="quadrado.valor" [trocarCor]="quadrado.trocarCor"></app-quadrado>
+            <app-quadrado 
+                (clicou)="escolherQuadrado(quadrado)" 
+                [valor]="quadrado.valor" 
+                [trocarCor]="quadrado.trocarCor">
+            </app-quadrado>
         </div>
     </div>
 
@@ -12,7 +16,7 @@
     </div>
 
     <div class="vencedor">        
-        <label id="vencedor"> {{ vencedor }} </label>
+        <label> {{ vencedor }} </label>
     </div>
 
     <div>        

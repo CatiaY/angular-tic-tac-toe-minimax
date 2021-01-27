@@ -9,7 +9,7 @@ export class QuadradoComponent implements OnInit {
 
   @Output() clicou = new EventEmitter();
   @Input() valor: string;
-  @Input() trocarCor: false;
+  @Input() trocarCor: boolean;
   
   constructor() { }
 
