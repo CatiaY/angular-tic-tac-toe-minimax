@@ -1,4 +1,6 @@
+import { ElementRef, Renderer2 } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
+import { Quadrado } from './quadrado';
 
 @Component({
   selector: 'app-jogo',
@@ -8,33 +10,43 @@ import { Component, OnInit } from '@angular/core';
 export class JogoComponent implements OnInit {
 
   jogador?: string;
-  vencedor?: string = null;
-  jogadorSelecionado: any;
-  vencedorSelecionado: any;
-  //quadrados = document.getElementsByClassName('quadrado');
+  vencedor?: string;
+  fimDeJogo: boolean;
+  quadrados: Array<Quadrado> = [];
+  numJogadas = 0;
 
-  constructor() { }
+  constructor(private elementRef: ElementRef, private renderer: Renderer2) { }
 
-  ngOnInit(): void {    
-    this.jogadorSelecionado = document.getElementById('jogador-selecionado') as HTMLLabelElement;
-    this.vencedorSelecionado = document.getElementById('vencedor') as HTMLLabelElement;
-    
-    this.mudarJogador('X');
+  ngOnInit(): void {  
+    for(let i = 0; i < 9; i++) {
+      this.quadrados.push();
+    }  
+    this.jogoSetup();    
   }
 
-  escolherQuadrado(event: Event): void {
-    //console.log('clicou no quadrado: ' + event.target.id);    
+  //--------------------------------------------------------------------
+  jogoSetup(): void {
+    
+    this.numJogadas = 0;
+    this.fimDeJogo = false;
+    this.mudarJogador('X');
+    this.vencedor = null;
+    
+    for(let i = 0; i < 9; i++) {
+      this.quadrados[i] = {valor: '-', trocarCor: false};
+    }
+  }
 
-    if(this.vencedor !== null) 
+  //--------------------------------------------------------------------
+  escolherQuadrado(quadrado: Quadrado): void {    
+    
+    if(this.fimDeJogo) 
       return;
-
-    const quadrado = event.target as HTMLDivElement;
-
-    if(quadrado.innerHTML !== '-')
+        
+    if(quadrado.valor !== '-')
       return;
-
-    quadrado.innerHTML = this.jogador;
-    quadrado.style.color = '#000';
+    
+    quadrado.valor = this.jogador;    
 
     if(this.jogador === 'X') {
       this.jogador = 'O';
@@ -43,110 +55,92 @@ export class JogoComponent implements OnInit {
       this.jogador = 'X';      
     }
 
+    this.numJogadas++;
     this.mudarJogador(this.jogador);
-    this.checarVencedor();
-  }
 
+    if(this.numJogadas >= 5)
+      this.checarJogo();
+  }
+ 
+
+  //--------------------------------------------------------------------
   mudarJogador(valor: string): void {
-    this.jogador = valor;
-    this.jogadorSelecionado.innerHTML = this.jogador;
+    this.jogador = valor;    
   }
 
-  checarVencedor(): void {
-    var quadrado1 = document.getElementById('1') as HTMLDivElement;
-    var quadrado2 = document.getElementById('2') as HTMLDivElement;
-    var quadrado3 = document.getElementById('3') as HTMLDivElement;
-    var quadrado4 = document.getElementById('4') as HTMLDivElement;
-    var quadrado5 = document.getElementById('5') as HTMLDivElement;
-    var quadrado6 = document.getElementById('6') as HTMLDivElement;
-    var quadrado7 = document.getElementById('7') as HTMLDivElement;
-    var quadrado8 = document.getElementById('8') as HTMLDivElement;
-    var quadrado9 = document.getElementById('9') as HTMLDivElement;
 
-    if(this.checaSequencia(quadrado1, quadrado2, quadrado3)) {
-      this.mudaCorQuadrado(quadrado1, quadrado2, quadrado3);
-      this.mudarVencedor(quadrado1);
+  //--------------------------------------------------------------------
+  checarJogo(): void {
+    
+    if(this.numJogadas == 9) {
+      this.finalizarPartida('');
       return;
     }
 
-    if(this.checaSequencia(quadrado4, quadrado5, quadrado6)) {
-      this.mudaCorQuadrado(quadrado4, quadrado5, quadrado6);
-      this.mudarVencedor(quadrado4);
+    if(this.verificarFimJogo(0, 1, 2))
       return;
-    }
 
-    if(this.checaSequencia(quadrado7, quadrado8, quadrado9)) {
-      this.mudaCorQuadrado(quadrado7, quadrado8, quadrado9);
-      this.mudarVencedor(quadrado7);
+    if(this.verificarFimJogo(3, 4, 5))
       return;
-    }
 
-    if(this.checaSequencia(quadrado1, quadrado4, quadrado7)) {
-      this.mudaCorQuadrado(quadrado1, quadrado4, quadrado7);
-      this.mudarVencedor(quadrado1);
+    if(this.verificarFimJogo(6, 7, 8))
       return;
-    }
 
-    if(this.checaSequencia(quadrado2, quadrado5, quadrado8)) {
-      this.mudaCorQuadrado(quadrado2, quadrado5, quadrado8);
-      this.mudarVencedor(quadrado2);
+    if(this.verificarFimJogo(0, 3, 6))
       return;
-    }
 
-    if(this.checaSequencia(quadrado3, quadrado6, quadrado9)) {
-      this.mudaCorQuadrado(quadrado3, quadrado6, quadrado9);
-      this.mudarVencedor(quadrado3);
+    if(this.verificarFimJogo(1, 4, 7))
       return;
-    }
 
-    if(this.checaSequencia(quadrado1, quadrado5, quadrado9)) {
-      this.mudaCorQuadrado(quadrado1, quadrado5, quadrado9);
-      this.mudarVencedor(quadrado1);
+    if(this.verificarFimJogo(2, 5, 8))
       return;
-    }
 
-    if(this.checaSequencia(quadrado3, quadrado5, quadrado7)) {
-      this.mudaCorQuadrado(quadrado3, quadrado5, quadrado7);
-      this.mudarVencedor(quadrado3);
+    if(this.verificarFimJogo(0, 4, 8))
       return;
-    }
+
+    if(this.verificarFimJogo(2, 4, 6))
+      return;    
   }
 
-  checaSequencia(quadrado1: HTMLDivElement, quadrado2: HTMLDivElement, quadrado3: HTMLDivElement): boolean {
-    var eIgual = false;
-
-    if(quadrado1.innerHTML !== '-' && quadrado1.innerHTML === quadrado2.innerHTML && quadrado1.innerHTML === quadrado3.innerHTML){
-      eIgual = true;
+ 
+  //--------------------------------------------------------------------
+  verificarFimJogo(a: number, b: number, c: number): boolean {
+    if(this.quadrados[a].valor !== '-' 
+      && this.quadrados[a].valor === this.quadrados[b].valor 
+      && this.quadrados[a].valor === this.quadrados[c].valor){
+        
+        this.mudaCorQuadrado(this.quadrados[a], this.quadrados[b], this.quadrados[c]);
+        this.finalizarPartida(this.quadrados[a].valor);       
+        
+        return true;
     }
     
-    return eIgual;
+    return false;
   }
 
 
-  mudaCorQuadrado(quadrado1: HTMLDivElement, quadrado2: HTMLDivElement, quadrado3: HTMLDivElement) {
-    quadrado1.style.background = '#0f0';
-    quadrado2.style.background = '#0f0';
-    quadrado3.style.background = '#0f0';
+  //--------------------------------------------------------------------
+  mudaCorQuadrado(a: Quadrado, b: Quadrado, c: Quadrado) {
+    a.trocarCor = true;
+    b.trocarCor = true;
+    c.trocarCor = true;
   }
 
 
-  mudarVencedor(quadrado: HTMLDivElement): void {
-    this.vencedor = quadrado.innerHTML;
-    this.vencedorSelecionado.innerHTML = this.vencedor;
-  }
-
-
-  reiniciar(): void {
-    this.vencedor = null;
-    this.vencedorSelecionado.innerHTML = '';
-
-    for(let i = 1; i <= 9; i++) {
-      let quadrado = document.getElementById(i.toString());
-      quadrado.style.background = '#eee';
-      quadrado.style.color = '#eee';
-      quadrado.innerHTML = '-';
+  //--------------------------------------------------------------------
+  finalizarPartida(vencedor: string): void {
+    this.fimDeJogo = true;
+    if(this.numJogadas < 9) {
+      this.vencedor = 'Vencedor: ' + vencedor + '!';    
     }
+    else {
+      this.vencedor = 'Empate!'; 
+    }
+  }
 
-    this.mudarJogador('X');
+
+  //--------------------------------------------------------------------
+  reiniciarJogo(): void {
+    this.jogoSetup();    
   }
 }

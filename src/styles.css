@@ -1,12 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
-body {
+@import '~bootstrap/dist/css/bootstrap.min.css';
+
+body { 
+    margin: 0;   
     text-align: center;
+    align-items: center;
+    align-content: center;
 }
 
-button {
+.marginTop10 {
     margin-top: 10px;
-    width: 100px;
-    height: 30px;
-    background: #eee;
-    cursor: pointer;
+}
+
+.margin5 {
+    margin: 5px;
 }
