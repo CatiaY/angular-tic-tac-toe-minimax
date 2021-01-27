@@ -44,6 +44,7 @@
     align-items: center;
     justify-content: center;
     margin-top: 10px;    
+    margin-right: 7%;
 }
 
 @media screen and (max-width: 780px) {    

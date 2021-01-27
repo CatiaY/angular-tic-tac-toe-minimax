@@ -3,7 +3,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 @Component({
   selector: 'app-quadrado',
   templateUrl: './quadrado.component.html',
-  styleUrls: ['../jogo-da-velha/jogo.component.css']
+  styleUrls: ['../board/jogo.component.css']
 })
 export class QuadradoComponent implements OnInit {
 

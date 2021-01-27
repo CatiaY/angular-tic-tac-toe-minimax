@@ -22,11 +22,19 @@
     <div>        
         <button (click)="reiniciarJogo()" type="button" class="btn btn-primary btn-lg">Reiniciar jogo</button>
     </div>
-
+    
     <div class="adversario">
-        <label>Jogar contra:</label>
-        <button type="button" class="btn btn-outline-success margin5 active" data-bs-toggle="button" autocomplete="off">Outro jogador</button>
-        <button type="button" class="btn btn-outline-warning margin5" data-bs-toggle="button" autocomplete="off">IA iniciante</button>
-        <button type="button" class="btn btn-outline-danger margin5" data-bs-toggle="button" autocomplete="off">IA expert</button>                
+        <label>Jogar contra:</label>        
+        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+            <label class="btn btn-secondary active margin5">
+              <input (click)="trocarModoJogo($event)" type="radio" name="options" id="jogador" checked> Outro jogador
+            </label>
+            <label class="btn btn-secondary margin5">
+              <input (click)="trocarModoJogo($event)" type="radio" name="options" id="IAIniciante"> IA iniciante
+            </label>
+            <label class="btn btn-secondary margin5">
+              <input (click)="trocarModoJogo($event)" type="radio" name="options" id="IAExpert"> IA expert
+            </label>
+          </div>
     </div>
 </div>

@@ -1,6 +1,6 @@
 import { ElementRef, Renderer2 } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
-import { Quadrado } from './quadrado';
+import { Quadrado } from '../quadrado.model';
 
 @Component({
   selector: 'app-jogo',
@@ -13,10 +13,11 @@ export class JogoComponent implements OnInit {
   vencedor?: string;
   fimDeJogo: boolean;
   quadrados: Array<Quadrado> = [];
+  modoJogo = 'jogador';
   numJogadas = 0;
   numJogadasAdversario = 0;  
 
-  constructor(private elementRef: ElementRef, private renderer: Renderer2) { }
+  constructor() { }
 
   ngOnInit(): void {  
     for(let i = 0; i < 9; i++) {
@@ -73,11 +74,6 @@ export class JogoComponent implements OnInit {
   //--------------------------------------------------------------------
   checarJogo(): void {
     
-    if(this.numJogadas == 9) {
-      this.finalizarPartida('');
-      return;
-    }
-
     // Checa linhas:
     if(this.verificarFimJogo(0, 1, 2))
       return;
@@ -99,6 +95,11 @@ export class JogoComponent implements OnInit {
       return;
     if(this.verificarFimJogo(2, 4, 6))
       return;    
+      
+    if(this.numJogadas == 9) {
+      this.finalizarPartida('', false);
+      return;
+    }
   }
 
  
@@ -111,7 +112,7 @@ export class JogoComponent implements OnInit {
       && this.quadrados[a].valor === this.quadrados[c].valor){
         
         this.mudaCorQuadrado(this.quadrados[a], this.quadrados[b], this.quadrados[c]);
-        this.finalizarPartida(this.quadrados[a].valor);       
+        this.finalizarPartida(this.quadrados[a].valor, true);       
         
         eIgual = true;
     }
@@ -129,9 +130,9 @@ export class JogoComponent implements OnInit {
 
 
   //--------------------------------------------------------------------
-  finalizarPartida(vencedor: string): void {
+  finalizarPartida(vencedor: string, teveCombinacao: boolean): void {
     this.fimDeJogo = true;
-    if(this.numJogadas < 9) {
+    if(teveCombinacao) {
       this.vencedor = 'Vencedor: ' + vencedor + '!';    
     }
     else {
@@ -143,5 +144,14 @@ export class JogoComponent implements OnInit {
   //--------------------------------------------------------------------
   reiniciarJogo(): void {
     this.jogoSetup();    
+  }
+
+  //--------------------------------------------------------------------
+  trocarModoJogo(event: Event): void {
+    const elementId = (event.target as HTMLButtonElement).id;
+    if(elementId !== this.modoJogo) {
+      this.modoJogo = elementId;
+      this.reiniciarJogo();
+    }
   }
 }
