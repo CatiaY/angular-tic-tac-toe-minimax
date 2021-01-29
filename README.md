@@ -4,8 +4,6 @@ Projeto utilizando Typescript e Angular 11 com implementação de inteligência 
 * Intermediário: faz as melhores jogadas apenas 50% das vezes. As demais jogadas são aleatórias.
 * Expert: sempre faz as melhores jogadas. IA implementada utilizando o algoritmo MiniMax com Poda Alfa-Beta.
 
-Demonstração: [Link](http://jogo-da-velha.s3-website-sa-east-1.amazonaws.com)
-
 <p>&nbsp;</p>
 
 ![Preview](ReadMe/printJogo.JPG)
