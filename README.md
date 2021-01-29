@@ -1,4 +1,16 @@
 # JogoDaVelha
+Desenvolvido inicialmente a partir da aula ........... de [................](https://github.com/ruschoni02/jogo-da-velha) da Digital Innovation One.
+Código refatorado adaptado para o Angular.
+Implementação de inteligência artificial (IA) utilizando dois níveis de dificuldade:
+* Iniciante: o computador faz jogadas completamente aleatórias
+* Expert: utilização do algoritmo MiniMax para determinar as melhores jogadas
+
+Explicação e algoritmo da IA obtida nos artigos [Building a Tic-Tac-Toe AI with Javascript](https://mostafa-samir.github.io/Tic-Tac-Toe-AI/) e [Minimax Algorithm in Game Theory | Set 3 (Tic-Tac-Toe AI – Finding optimal move)](https://www.geeksforgeeks.org/minimax-algorithm-in-game-theory-set-3-tic-tac-toe-ai-finding-optimal-move/), respectivamente.
+Melhoramento da IA, utilizando o algoritmo Alpha-Beta baseado no artigo [](https://www.geeksforgeeks.org/minimax-algorithm-in-game-theory-set-4-alpha-beta-pruning/?ref=rp)
+
+Obs.: 
+* O tabuleiro 3x3 foi disposto em um array linear com 9 posições.
+
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.2.
 

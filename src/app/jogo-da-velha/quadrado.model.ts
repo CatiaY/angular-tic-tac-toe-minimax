@@ -1,4 +1,5 @@
 export interface Quadrado {
     valor: string, 
-    trocarCor: boolean
+    trocarCor: boolean,
+    turnoAI: boolean
 }

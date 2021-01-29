@@ -4,9 +4,8 @@
     <div class="telaJogo">
         <div class="col-4 g-0" *ngFor="let quadrado of quadrados">
             <app-quadrado 
-                (clicou)="escolherQuadrado(quadrado)" 
-                [valor]="quadrado.valor" 
-                [trocarCor]="quadrado.trocarCor">
+                (clicou)="escolherQuadrado(quadrado)"
+                [quadrado] = "quadrado">
             </app-quadrado>
         </div>
     </div>

@@ -1,5 +1,5 @@
-import { ElementRef, Renderer2 } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
+import { AIService } from '../ai.service';
 import { Quadrado } from '../quadrado.model';
 
 @Component({
@@ -9,21 +9,22 @@ import { Quadrado } from '../quadrado.model';
 })
 export class JogoComponent implements OnInit {
 
+  // Jogador = 'X', computador AI = 'O'
   jogador?: string;
   vencedor?: string;
   fimDeJogo: boolean;
   quadrados: Array<Quadrado> = [];
-  modoJogo = 'jogador';
+  // Há três modalidades de oponentes: jogador, IAIniciante, IAExpert
+  modoJogo = 'jogador';  // Voltar para 'jogador' após testes!!!!!!!!!!!!!!!!!!!
   numJogadas = 0;
-  numJogadasAdversario = 0;  
+    
+  constructor(private aiService: AIService) { }
 
-  constructor() { }
-
-  ngOnInit(): void {  
+  ngOnInit(): void { 
     for(let i = 0; i < 9; i++) {
       this.quadrados.push();
-    }  
-    this.jogoSetup();    
+    }      
+    this.jogoSetup();        
   }
 
   //--------------------------------------------------------------------
@@ -31,49 +32,72 @@ export class JogoComponent implements OnInit {
     
     this.numJogadas = 0;
     this.fimDeJogo = false;
-    this.mudarJogador('X');
-    this.vencedor = null;
+    this.jogador = 'X';
+    this.vencedor = null;           
     
     for(let i = 0; i < 9; i++) {
-      this.quadrados[i] = {valor: '-', trocarCor: false};
+      this.quadrados[i] = {valor: '-', trocarCor: false, turnoAI: false};
     }
   }
 
   //--------------------------------------------------------------------
   escolherQuadrado(quadrado: Quadrado): void {    
     
-    if(this.fimDeJogo) 
-      return;
-        
     if(quadrado.valor !== '-')
       return;
-    
-    quadrado.valor = this.jogador;    
 
-    if(this.jogador === 'X') {
-      this.jogador = 'O';
+    quadrado.valor = this.jogador;
+    
+    this.numJogadas++;
+    
+    if(this.numJogadas >= 5)
+        this.checarJogo();
+    
+    if(this.fimDeJogo)
+      return;
+    
+    this.mudarJogador();     
+  }
+
+  //--------------------------------------------------------------------
+  mudarJogador(): void {
+    if(this.jogador === 'X') {      
+      this.jogador = 'O';      
+      
+      if(this.modoJogo !== 'jogador') {
+        // Trava a jogada do usuário enquanto for o turno do computador:
+        this.quadrados.forEach(valor => valor.turnoAI = true);                
+        // Chama o turno da AI:
+        if(this.modoJogo === 'IAIniciante'){
+          // Se for iniciante chama o turno com um pequeno delay
+          setTimeout(() => {
+            this.chamaTurnoOponente();  
+          }, 500);
+        }
+        else {
+          this.chamaTurnoOponente();     
+        }
+      }      
     }
     else {
-      this.jogador = 'X';      
-    }
-
-    this.numJogadas++;
-    this.mudarJogador(this.jogador);
-
-    if(this.numJogadas >= 5)
-      this.checarJogo();
-  }
- 
-
-  //--------------------------------------------------------------------
-  mudarJogador(valor: string): void {
-    this.jogador = valor;    
+      this.jogador = 'X';
+      if(this.modoJogo !== 'jogador') {
+        // Volta para o turno do usuário, reabilitando os quadrados:
+        this.quadrados.forEach(valor => valor.turnoAI = false);
+      }
+    }    
   }
 
 
   //--------------------------------------------------------------------
-  checarJogo(): void {
-    
+  chamaTurnoOponente(): void {        
+    const quadrados = this.quadrados.map(q => q.valor);              
+    const jogada = this.aiService.turnoAdversario(quadrados, this.modoJogo);          
+    this.escolherQuadrado(this.quadrados[jogada]);                    
+  }
+
+  //--------------------------------------------------------------------
+  checarJogo(): void {    
     // Checa linhas:
     if(this.verificarFimJogo(0, 1, 2))
       return;
@@ -95,17 +119,17 @@ export class JogoComponent implements OnInit {
       return;
     if(this.verificarFimJogo(2, 4, 6))
       return;    
-      
-    if(this.numJogadas == 9) {
-      this.finalizarPartida('', false);
-      return;
+    
+    // Se ninguém ganhou, verifica se deu empate:
+    if(this.numJogadas === 9) {
+      this.finalizarPartida('', false);      
     }
   }
 
  
   //--------------------------------------------------------------------
   verificarFimJogo(a: number, b: number, c: number): boolean {
-    let eIgual = false;
+    let ehIgual = false;
 
     if(this.quadrados[a].valor !== '-' 
       && this.quadrados[a].valor === this.quadrados[b].valor 
@@ -114,10 +138,10 @@ export class JogoComponent implements OnInit {
         this.mudaCorQuadrado(this.quadrados[a], this.quadrados[b], this.quadrados[c]);
         this.finalizarPartida(this.quadrados[a].valor, true);       
         
-        eIgual = true;
+        ehIgual = true;
     }
     
-    return eIgual;
+    return ehIgual;
   }
 
 
@@ -146,12 +170,13 @@ export class JogoComponent implements OnInit {
     this.jogoSetup();    
   }
 
+
   //--------------------------------------------------------------------
   trocarModoJogo(event: Event): void {
     const elementId = (event.target as HTMLButtonElement).id;
     if(elementId !== this.modoJogo) {
       this.modoJogo = elementId;
-      this.reiniciarJogo();
+      //this.reiniciarJogo();
     }
   }
 }

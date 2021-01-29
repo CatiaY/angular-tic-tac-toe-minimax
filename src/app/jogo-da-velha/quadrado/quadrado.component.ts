@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Quadrado } from '../quadrado.model';
 
 @Component({
   selector: 'app-quadrado',
@@ -8,8 +9,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 export class QuadradoComponent implements OnInit {
 
   @Output() clicou = new EventEmitter();
-  @Input() valor: string;
-  @Input() trocarCor: boolean;
+  @Input() quadrado: Quadrado;
   
   constructor() { }
 
@@ -17,6 +17,9 @@ export class QuadradoComponent implements OnInit {
   }
 
   escolherQuadrado(): void {
+    if(this.quadrado.turnoAI)
+      return;
+      
     this.clicou.emit();
   }
 }
