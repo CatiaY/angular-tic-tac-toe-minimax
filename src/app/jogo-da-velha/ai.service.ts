@@ -36,12 +36,11 @@ export class AIService {
     
     // Modo expert
     // As escolhas são sempre ótimas
-    private jogadaOtima(quadrados:string[]): number {                        
-        let melhorValor = 1000;
+    private jogadaOtima(quadrados:string[]): number {                                
+        let valores: Array<any> = [];
         let melhorPosicao;        
     
-        // Verifica todas as posições vazias, obtendo os melhores valores MiniMax para elas
-        // Retorna o index da posição com o valor ótimo        
+        // Verifica todas as posições vazias, obtendo os melhores valores MiniMax para elas               
         for (let i = 0; i < 9; i++)
         {
             if(quadrados[i] === '-') {
@@ -52,18 +51,30 @@ export class AIService {
                 // int profundidade, bool ehMaximizer                
                 let valorJogada = this.minimax(quadrados, 1, true);
 
-                // Se o valor atual é melhor que o melhor valor,então atualiza
-                if (valorJogada < melhorValor)
-                {
-                    melhorPosicao = i;
-                    melhorValor = valorJogada;
-                }
-
+                // Guarda o valor de cada jogada
+                valores.push({posicao: i, valor: valorJogada});
+                
                 // Desfaz a jogada
                 quadrados[i] = '-';
             }
         }    
         
+        // Se houver mais de uma jogada ótima, obtém uma jogada aleatória
+        if(valores.length > 0) {
+            // Ordena os valores obtidos por ordem crescente
+            valores.sort((a, b) => a.valor - b.valor);
+
+            // Mantém apenas os menores valores iguais
+            let melhorValor = valores[0].valor;
+            valores = valores.filter(v => v.valor === melhorValor);
+
+            melhorPosicao = valores[Math.floor(Math.random() * valores.length)].posicao;            
+        }
+        else {
+            melhorPosicao = valores[0];
+        }
+        
+        // Retorna o index da posição com o valor ótimo 
         return melhorPosicao;
     }
    
