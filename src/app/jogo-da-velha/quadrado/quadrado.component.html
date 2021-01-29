@@ -1,6 +1,3 @@
-<div 
-    (click)="escolherQuadrado()"     
-    [ngClass]="[(quadrado.valor !== '-')?'quadrado-vazio col quadrado-texto':'quadrado-vazio col', (quadrado.trocarCor)?'quadrado-vazio col quadrado-ganhou':'quadrado-vazio col']"    
-    >
-        {{ quadrado.valor }}
+<div (click)="escolherQuadrado()" [ngClass]="obterClasse()">
+    {{ quadrado.valor }}
 </div>

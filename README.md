@@ -1,16 +1,24 @@
-# JogoDaVelha
-Desenvolvido inicialmente a partir da aula ........... de [................](https://github.com/ruschoni02/jogo-da-velha) da Digital Innovation One.
-Código refatorado adaptado para o Angular.
-Implementação de inteligência artificial (IA) utilizando dois níveis de dificuldade:
+# Jogo da Velha (Tic Tac Toe)
+Projeto utilizando Typescript e Angular 11 com implementação de inteligência artificial (IA) utilizando três níveis de dificuldade:
 * Iniciante: o computador faz jogadas completamente aleatórias
-* Expert: utilização do algoritmo MiniMax para determinar as melhores jogadas
+* Intermediário: faz as melhores jogadas apenas 50% das vezes. As demais jogadas são aleatórias.
+* Expert: sempre faz as melhores jogadas. IA implementada utilizando o algoritmo MiniMax com Poda Alfa-Beta.
 
-Explicação e algoritmo da IA obtida nos artigos [Building a Tic-Tac-Toe AI with Javascript](https://mostafa-samir.github.io/Tic-Tac-Toe-AI/) e [Minimax Algorithm in Game Theory | Set 3 (Tic-Tac-Toe AI – Finding optimal move)](https://www.geeksforgeeks.org/minimax-algorithm-in-game-theory-set-3-tic-tac-toe-ai-finding-optimal-move/), respectivamente.
-Melhoramento da IA, utilizando o algoritmo Alpha-Beta baseado no artigo [](https://www.geeksforgeeks.org/minimax-algorithm-in-game-theory-set-4-alpha-beta-pruning/?ref=rp)
+Demonstração: [Link](http://jogo-da-velha.s3-website-sa-east-1.amazonaws.com)
 
-Obs.: 
-* O tabuleiro 3x3 foi disposto em um array linear com 9 posições.
+<p>&nbsp;</p>
 
+![Preview](ReadMe/printJogo.JPG)
+
+<p>&nbsp;</p>
+
+O desenvolvimento do projeto base foi feito a partir da atividade "Criando seu próprio jogo da velha com HTML e Javascript", de [
+Vitor Ruschoni](https://github.com/ruschoni02/jogo-da-velha), da Digital Innovation One.
+
+A explicação e os algoritmos foram obtidos nos artigos [Building a Tic-Tac-Toe AI with Javascript](https://mostafa-samir.github.io/Tic-Tac-Toe-AI/) e [Minimax Algorithm in Game Theory | Set 3 (Tic-Tac-Toe AI – Finding optimal move)](https://www.geeksforgeeks.org/minimax-algorithm-in-game-theory-set-3-tic-tac-toe-ai-finding-optimal-move/).
+Melhoramento da IA utilizando o algoritmo poda Alfa-Beta baseado no artigo [Minimax Algorithm in Game Theory | Set 4 (Alpha-Beta Pruning)](https://www.geeksforgeeks.org/minimax-algorithm-in-game-theory-set-4-alpha-beta-pruning/?ref=rp).
+
+<p>&nbsp;</p>
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.2.
 

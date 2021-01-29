@@ -22,4 +22,19 @@ export class QuadradoComponent implements OnInit {
       
     this.clicou.emit();
   }
+
+  obterClasse(): string { 
+    if(this.quadrado.valor === '-') {
+      return 'quadrado-vazio';
+    }
+
+    if(this.quadrado.trocarCor) {
+      if(this.quadrado.valor === 'X')
+        return 'quadrado-vazio quadrado-ganhou';
+      else
+        return 'quadrado-vazio quadrado-perdeu';
+    }
+
+    return 'quadrado-vazio quadrado-texto';
+  }
 }

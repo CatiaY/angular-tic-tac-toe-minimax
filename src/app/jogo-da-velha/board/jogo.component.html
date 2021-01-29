@@ -1,13 +1,13 @@
-<div class="container-flex">
+<div>
     <h1>Jogo da Velha</h1>
 
-    <div class="telaJogo">
-        <div class="col-4 g-0" *ngFor="let quadrado of quadrados">
+    <div class="telaJogo" >
+        <div *ngFor="let quadrado of quadrados">
             <app-quadrado 
                 (clicou)="escolherQuadrado(quadrado)"
                 [quadrado] = "quadrado">
             </app-quadrado>
-        </div>
+        </div>        
     </div>
 
     <div class="jogador">
@@ -31,6 +31,9 @@
             <label class="btn btn-secondary margin5">
               <input (click)="trocarModoJogo($event)" type="radio" name="options" id="IAIniciante"> IA iniciante
             </label>
+            <label class="btn btn-secondary margin5">
+                <input (click)="trocarModoJogo($event)" type="radio" name="options" id="IAIntermediaria"> IA intermediária
+              </label>
             <label class="btn btn-secondary margin5">
               <input (click)="trocarModoJogo($event)" type="radio" name="options" id="IAExpert"> IA expert
             </label>

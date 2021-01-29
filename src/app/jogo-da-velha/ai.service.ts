@@ -16,13 +16,22 @@ export class AIService {
         let quadrados = [...tabuleiro];
         
         if(modoJogo === 'IAIniciante') {                    
-            move = this.jogadaAleatoria(quadrados);
-            return move;        
+            move = this.jogadaAleatoria(quadrados);            
         }
-        else {              
-            move = this.jogadaOtima(quadrados);
-            return move;
+        else if(modoJogo === 'IAIntermediaria') {
+            // Em metade das jogadas faz um movimento aleatório. Nas demais, faz a melhor jogada
+            const porcentagem = 50;
+            if(Math.random() * 100 <= porcentagem) 
+                move = this.jogadaAleatoria(quadrados);
+            
+            else
+                move = this.jogadaOtima(quadrados);
+        }
+        else {            
+            move = this.jogadaOtima(quadrados);            
         }        
+
+        return move;
     }
 
     

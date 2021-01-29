@@ -1,21 +1,22 @@
 .telaJogo {
-    margin: auto;    
-    width:40%;    
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;    
-    justify-content: center;
+    margin: 30px auto 15px auto;  
+    width:590px;    
+    display:grid;
+    gap: 10px;
+    grid-template-columns: 1fr 1fr 1fr;
+    background-color: grey;
 }
 
-.quadrado-vazio {    
+.quadrado-vazio {     
+    width: 100%;
     height: 190px;    
     text-align: center;    
     background: #eee;
-    display: block;
-    padding: 15% 10% 10% 10%;
+    display: block;    
     font-size: 80px;
     font-weight: bold;
-    margin: 10px;
+    margin: 0px;    
+    padding-top: 30px;
     cursor: pointer;
     color: #eee;
 }
@@ -25,8 +26,13 @@
 }
 
 .quadrado-ganhou {
-    background: #0f0;
-    color:black;
+    background: #198754;
+    color:white;
+}
+
+.quadrado-perdeu {
+    background: #dc3545;
+    color:white;
 }
 
 .jogador {
@@ -44,23 +50,5 @@
     align-items: center;
     justify-content: center;
     margin-top: 10px;    
-    margin-right: 7%;
-}
-
-@media screen and (max-width: 780px) {    
-    .telaJogo {
-        width: 100%;
-    }    
-}
-
-@media screen and (max-width: 990px) {
-    .telaJogo {
-        width: 80%;
-    }
-}
-
-@media screen and (max-width: 1280px) {
-    .telaJogo {
-        width: 60%;
-    }
+    margin-right: 6%;
 }

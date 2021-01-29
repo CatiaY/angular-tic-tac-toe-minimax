@@ -14,8 +14,8 @@ export class JogoComponent implements OnInit {
   vencedor?: string;
   fimDeJogo: boolean;
   quadrados: Array<Quadrado> = [];
-  // Há três modalidades de oponentes: jogador, IAIniciante, IAExpert
-  modoJogo = 'jogador';  // Voltar para 'jogador' após testes!!!!!!!!!!!!!!!!!!!
+  // Há quatro modalidades de oponentes: jogador, IAIniciante, IAIntermediaria, IAExpert
+  modoJogo = 'jogador';
   numJogadas = 0;
     
   constructor(private aiService: AIService) { }
@@ -67,16 +67,10 @@ export class JogoComponent implements OnInit {
       if(this.modoJogo !== 'jogador') {
         // Trava a jogada do usuário enquanto for o turno do computador:
         this.quadrados.forEach(valor => valor.turnoAI = true);                
-        // Chama o turno da AI:
-        if(this.modoJogo === 'IAIniciante'){
-          // Se for iniciante chama o turno com um pequeno delay
-          setTimeout(() => {
-            this.chamaTurnoOponente();  
-          }, 500);
-        }
-        else {
-          this.chamaTurnoOponente();     
-        }
+        // Chama o turno da AI com um pequeno delay... 
+        setTimeout(() => {
+          this.chamaTurnoOponente();  
+        }, 500);        
       }      
     }
     else {
@@ -176,7 +170,7 @@ export class JogoComponent implements OnInit {
     const elementId = (event.target as HTMLButtonElement).id;
     if(elementId !== this.modoJogo) {
       this.modoJogo = elementId;
-      //this.reiniciarJogo();
+      this.reiniciarJogo();
     }
   }
 }
