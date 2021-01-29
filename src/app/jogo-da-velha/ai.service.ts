@@ -19,7 +19,7 @@ export class AIService {
             move = this.jogadaAleatoria(quadrados);
             return move;        
         }
-        else {            
+        else {              
             move = this.jogadaOtima(quadrados);
             return move;
         }        
@@ -37,8 +37,15 @@ export class AIService {
     // Modo expert
     // As escolhas são sempre ótimas
     private jogadaOtima(quadrados:string[]): number {                                
+
         let valores: Array<any> = [];
         let melhorPosicao;        
+
+        // Valores iniciais de Alfa e Beta 
+        // Alfa é o melhor valor que o MAXimizer consegue garantir a partir daquela profundidade
+        // Beta é o melhor valor que o MINimizer consegue garantir a partir daquela profundidade
+        let alfa = -1000; 
+        let beta = 1000; 
     
         // Verifica todas as posições vazias, obtendo os melhores valores MiniMax para elas               
         for (let i = 0; i < 9; i++)
@@ -48,8 +55,8 @@ export class AIService {
                 quadrados[i] = this.oponente;
                 
                 // Calcula o valor para esse movimento
-                // int profundidade, bool ehMaximizer                
-                let valorJogada = this.minimax(quadrados, 1, true);
+                // int profundidade, bool ehMaximizer = true, pois a próxima jogada é do maximizer                
+                let valorJogada = this.minimax(quadrados, 1, true, alfa, beta);
 
                 // Guarda o valor de cada jogada
                 valores.push({posicao: i, valor: valorJogada});
@@ -95,7 +102,7 @@ export class AIService {
     //--------------------------------------------------------------------
     // Função recursiva que calcula o valor MiniMax de um estado do jogo
     // Ela considera todos os possíveis caminhos que o jogo pode ir e retorna o valor do melhor caminho
-    private minimax(quadrados:string[], profundidade: number, ehMaximizer: boolean): number {
+    private minimax(quadrados:string[], profundidade: number, ehMaximizer: boolean, alfa: number, beta: number): number {
     
         let pontuacao = this.evaluationFunction(quadrados, profundidade);
 
@@ -106,16 +113,16 @@ export class AIService {
         }
         
         if(ehMaximizer){                        
-            return this.maximizer(quadrados, profundidade, ehMaximizer);
+            return this.maximizer(quadrados, profundidade, ehMaximizer, alfa, beta);
         }
         else {                  
-            return this.minimizer(quadrados, profundidade, ehMaximizer);
+            return this.minimizer(quadrados, profundidade, ehMaximizer, alfa, beta);
         } 
     }
     
 
     //--------------------------------------------------------------------    
-    private maximizer(quadrados:string[], profundidade: number, ehMaximizer: boolean) {
+    private maximizer(quadrados:string[], profundidade: number, ehMaximizer: boolean, alfa: number, beta: number) {
         
         let melhor = -1000;
     
@@ -129,11 +136,17 @@ export class AIService {
 
                 // Calcula o valor para esse movimento de forma recursiva            
                 // Se o valor atual é MAIOR que o melhor valor, então atualiza                
-                const minimax = this.minimax(quadrados, profundidade + 1, !ehMaximizer);
+                const minimax = this.minimax(quadrados, profundidade + 1, !ehMaximizer, alfa, beta);
                 melhor = Math.max(melhor, minimax);
-                
+
                 // Desfaz a jogada
-                quadrados[i] = '-';                
+                quadrados[i] = '-';
+
+                alfa = Math.max(alfa, melhor); 
+      
+                // Poda Alfa Beta
+                if (beta <= alfa) 
+                    break; 
             }
         }
                 
@@ -142,7 +155,7 @@ export class AIService {
 
 
     //--------------------------------------------------------------------    
-    private minimizer(quadrados:string[], profundidade: number, ehMaximizer: boolean) {
+    private minimizer(quadrados:string[], profundidade: number, ehMaximizer: boolean, alfa: number, beta: number) {
         
         let melhor = 1000;
     
@@ -156,11 +169,17 @@ export class AIService {
                                 
                 // Calcula o valor para esse movimento de forma recursiva            
                 // Se o valor atual é MENOR que o melhor valor, então atualiza                
-                let minimax = this.minimax(quadrados, profundidade + 1, !ehMaximizer);                
+                let minimax = this.minimax(quadrados, profundidade + 1, !ehMaximizer, alfa, beta);                
                 melhor = Math.min(melhor, minimax); 
-                
+
                 // Desfaz a jogada
-                quadrados[i] = '-';                
+                quadrados[i] = '-';    
+                
+                beta = Math.min(beta, melhor); 
+    
+                // Poda Alfa Beta
+                if (beta <= alfa) 
+                    break; 
             }
         }
         
